@@ -12,12 +12,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Quan trọng: Tắt CSRF để Postman gửi được lệnh POST/PUT/DELETE
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().authenticated() // Yêu cầu đăng nhập với mọi link
-            )
-            .httpBasic(withDefaults()); // Sử dụng chế độ đăng nhập Basic Auth (user/123456)
-        
+                .csrf(csrf -> csrf.disable()) // Quan trọng: Tắt CSRF để Postman gửi được lệnh POST/PUT/DELETE
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll() // Cho phép truy cập tất cả mà không cần đăng nhập
+                )
+                .httpBasic(withDefaults()); // Giữ cấu hình basic nhưng không bắt buộc nữa
+
         return http.build();
     }
 }

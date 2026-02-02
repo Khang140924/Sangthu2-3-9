@@ -9,11 +9,12 @@ import java.util.Optional;
 @Service
 public class BookService {
     private List<Book> books = new ArrayList<>();
+    private int nextId = 1;
 
     // Tạo sẵn một vài cuốn sách khi chạy chương trình
     public BookService() {
-        books.add(new Book(1, "Lap trinh Java", "Nguyen Van A"));
-        books.add(new Book(2, "Spring Boot Co ban", "Tran Van B"));
+        addBook(new Book(0, "Lap trinh Java", "Nguyen Van A")); // ID sẽ được tự động gán
+        addBook(new Book(0, "Spring Boot Co ban", "Tran Van B"));
     }
 
     // Lấy tất cả sách
@@ -28,6 +29,7 @@ public class BookService {
 
     // Thêm sách mới
     public void addBook(Book book) {
+        book.setId(nextId++);
         books.add(book);
     }
 
