@@ -29,7 +29,7 @@
             <img th:if="${product.image != null and product.image.startsWith('http')}" th:src="${product.image}"
               height="80" />
             <img th:if="${product.image != null and !product.image.startsWith('http')}"
-              th:src="@{/images/{filename}(filename=${product.image})}" height="80" />
+              th:src="@{/uploads/{filename}(filename=${product.image})}" height="80" />
             <span th:unless="${product.image != null and product.image != ''}">Không có hình</span>
           </td>
           <td class="align-middle" th:text="${product.category != null ? product.category.name : ''}">Danh mục</td>

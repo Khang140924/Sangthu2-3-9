@@ -44,7 +44,7 @@ public class ProductController {
     @PostMapping("/add")
     public String addProduct(@Valid @ModelAttribute("product") Product product,
             BindingResult bindingResult, Model model,
-            @RequestParam("image") MultipartFile multipartFile) {
+            @RequestParam("imageProduct") MultipartFile multipartFile) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryRepository.findAll());
             return "add-product";
@@ -79,7 +79,7 @@ public class ProductController {
     public String editProduct(@PathVariable("id") int id, Model model,
             @Valid @ModelAttribute("product") Product product,
             BindingResult bindingResult,
-            @RequestParam("image") MultipartFile multipartFile) {
+            @RequestParam("imageProduct") MultipartFile multipartFile) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryRepository.findAll());
             return "edit-product";

@@ -36,8 +36,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="image" class="form-label">Hình ảnh mới (Để trống nếu giữ nguyên):</label>
-                <input type="file" id="image" name="image" accept="image/*" class="form-control" />
+                <label for="imageProduct" class="form-label">Hình ảnh mới (Để trống nếu giữ nguyên):</label>
+                <input type="file" id="imageProduct" name="imageProduct" accept="image/*" class="form-control" />
                 <div class="text-danger" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
             </div>
 
