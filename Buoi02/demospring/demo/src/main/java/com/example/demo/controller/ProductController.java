@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
+import com.example.demo.repository.CategoryRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     private static final String UPLOAD_DIR = "uploads/";
 
     @GetMapping
@@ -33,21 +37,23 @@ public class ProductController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("product", new Product());
+        model.addAttribute("categories", categoryRepository.findAll());
         return "add-product";
     }
 
     @PostMapping("/add")
     public String addProduct(@Valid @ModelAttribute("product") Product product,
-            BindingResult bindingResult,
+            BindingResult bindingResult, Model model,
             @RequestParam("image") MultipartFile multipartFile) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryRepository.findAll());
             return "add-product";
         }
 
         if (!multipartFile.isEmpty()) {
             try {
                 String fileName = multipartFile.getOriginalFilename();
-                product.setImageName(fileName);
+                product.setImage(fileName);
                 saveFile(UPLOAD_DIR, fileName, multipartFile);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -63,17 +69,19 @@ public class ProductController {
         Product product = productService.getProductById(id);
         if (product != null) {
             model.addAttribute("product", product);
+            model.addAttribute("categories", categoryRepository.findAll());
             return "edit-product";
         }
         return "redirect:/products";
     }
 
     @PostMapping("/edit/{id}")
-    public String editProduct(@PathVariable("id") int id,
+    public String editProduct(@PathVariable("id") int id, Model model,
             @Valid @ModelAttribute("product") Product product,
             BindingResult bindingResult,
             @RequestParam("image") MultipartFile multipartFile) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryRepository.findAll());
             return "edit-product";
         }
 
@@ -87,13 +95,13 @@ public class ProductController {
         if (!multipartFile.isEmpty()) {
             try {
                 String fileName = multipartFile.getOriginalFilename();
-                product.setImageName(fileName);
+                product.setImage(fileName);
                 saveFile(UPLOAD_DIR, fileName, multipartFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            product.setImageName(existingProduct.getImageName());
+            product.setImage(existingProduct.getImage());
         }
 
         productService.updateProduct(product);

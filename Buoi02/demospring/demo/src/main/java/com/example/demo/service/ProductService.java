@@ -1,53 +1,34 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Product;
+import com.example.demo.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
-    private List<Product> listProduct = new ArrayList<>();
-
-    public ProductService() {
-    }
+    @Autowired
+    private ProductRepository productRepository;
 
     public List<Product> getAllProducts() {
-        return listProduct;
+        return productRepository.findAll();
     }
 
     public Product getProductById(int id) {
-        Optional<Product> optional = listProduct.stream()
-                .filter(p -> p.getId() == id)
-                .findFirst();
-        return optional.orElse(null);
+        return productRepository.findById(id).orElse(null);
     }
 
-    public void addProduct(Product newProduct) {
-        if (listProduct.isEmpty()) {
-            newProduct.setId(1);
-        } else {
-            int maxId = listProduct.stream()
-                    .mapToInt(Product::getId)
-                    .max()
-                    .orElse(0);
-            newProduct.setId(maxId + 1);
-        }
-        listProduct.add(newProduct);
+    public void addProduct(Product product) {
+        productRepository.save(product);
     }
 
     public void updateProduct(Product product) {
-        for (int i = 0; i < listProduct.size(); i++) {
-            if (listProduct.get(i).getId() == product.getId()) {
-                listProduct.set(i, product);
-                return;
-            }
-        }
+        productRepository.save(product);
     }
 
     public void deleteProduct(int id) {
-        listProduct.removeIf(p -> p.getId() == id);
+        productRepository.deleteById(id);
     }
 }
