@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}">
+
+<head>
+  <title>Sản phẩm</title>
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <a href="/products/add" class="btn btn-primary mb-3">Create New Product</a>
+    <table class="table table-light table-hover table-striped">
+      <thead class="table-light border-bottom">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Image</th>
+          <th>Category Name</th>
+          <th class="text-end"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="product : ${products}">
+          <td class="align-middle" th:text="${product.id}">1</td>
+          <td class="align-middle" th:text="${product.name}">Tên sản phẩm</td>
+          <td class="align-middle" th:text="${product.price}">Giá</td>
+          <td class="align-middle">
+            <img th:if="${product.image != null and product.image.startsWith('http')}" th:src="${product.image}"
+              height="80" />
+            <img th:if="${product.image != null and !product.image.startsWith('http')}"
+              th:src="@{/uploads/{filename}(filename=${product.image})}" height="80" />
+            <span th:unless="${product.image != null and product.image != ''}">Không có hình</span>
+          </td>
+          <td class="align-middle" th:text="${product.category != null ? product.category.name : ''}">Danh mục</td>
+          <td class="align-middle text-end">
+            <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-secondary btn-sm">Edit</a>
+            <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-danger btn-sm"
+              onclick="return confirm('Bạn có chắc chắn muốn xóa?');">Delete</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>

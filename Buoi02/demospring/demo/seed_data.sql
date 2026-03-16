@@ -1,0 +1,16 @@
+USE bai5_qlsp;
+
+SET FOREIGN_KEY_CHECKS=0;
+TRUNCATE TABLE account_role;
+TRUNCATE TABLE account;
+TRUNCATE TABLE role;
+SET FOREIGN_KEY_CHECKS=1;
+
+INSERT INTO account VALUES (1, 'admin', '$2a$12$S38D55tb/r/ag3pLeFzDlOanMvZGptDj62C8dkwjBYDEpXeCqfnu.');
+INSERT INTO account VALUES (2, 'user1', '$2a$12$PmWjzD7IbJeakxEivab9l.dnMUPUHL3h0UqiqM7rjHd9B32mDxY7y');
+
+INSERT INTO role VALUES (1, 'ROLE_ADMIN');
+INSERT INTO role VALUES (2, 'ROLE_USER');
+
+INSERT INTO account_role VALUES (1, 1);
+INSERT INTO account_role VALUES (2, 2);
