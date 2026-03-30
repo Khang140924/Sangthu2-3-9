@@ -1,0 +1,15 @@
+package com.example.demo.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CartItem {
+    private int productId;
+    private String name;
+    private Long price;
+    private int quantity;
+}

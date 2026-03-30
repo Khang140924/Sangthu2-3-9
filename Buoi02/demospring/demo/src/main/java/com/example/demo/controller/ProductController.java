@@ -29,8 +29,31 @@ public class ProductController {
     private static final String UPLOAD_DIR = "uploads/";
 
     @GetMapping
-    public String listProducts(Model model) {
-        model.addAttribute("products", productService.getAllProducts());
+    public String listProducts(Model model,
+                               @RequestParam(value = "keyword", required = false) String keyword,
+                               @RequestParam(value = "categoryId", required = false) Integer categoryId,
+                               @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+                               @RequestParam(value = "sortField", defaultValue = "id") String sortField,
+                               @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir) {
+        int pageSize = 5;
+
+        org.springframework.data.domain.Page<Product> page = productService.findPaginated(pageNo, pageSize, sortField, sortDir, keyword, categoryId);
+        java.util.List<Product> listProducts = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("categoryId", categoryId);
+        
+        // Cung cấp danh sách categories để load Dropdown
+        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute("products", listProducts);
+
         return "products";
     }
 

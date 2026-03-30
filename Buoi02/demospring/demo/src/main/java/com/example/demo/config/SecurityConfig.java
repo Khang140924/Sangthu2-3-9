@@ -24,11 +24,13 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authorize -> authorize
                 // Quy định 1: Các thao tác Thêm, Sửa, Xóa phải là ADMIN
-                // Lưu ý: Đã sửa thành /products/... để khớp với ProductController của bạn
                 .requestMatchers("/products/add/**", "/products/edit/**", "/products/delete/**").hasRole("ADMIN")
                 
-                // Quy định 2: Trang danh sách sản phẩm thì cả USER và ADMIN đều vào được
-                .requestMatchers("/products").hasAnyRole("USER", "ADMIN")
+                // Bắt buộc đăng nhập với Checkout và Lịch sử đơn hàng
+                .requestMatchers("/cart/checkout/**", "/orders/**").authenticated()
+
+                // Quy định 2: Trang danh sách sản phẩm, Giỏ hàng thì truy cập tự do
+                .requestMatchers("/products", "/cart/**", "/").permitAll()
                 
                 // Quy định 3: Các tài nguyên tĩnh (css, js, images) cho phép truy cập tự do
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/uploads/**").permitAll()
